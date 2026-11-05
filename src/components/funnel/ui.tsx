@@ -43,7 +43,7 @@ export function OptionCard({ selected, multi, onClick, children }: { selected: b
   );
 }
 
-export function PhotoPlaceholder({ label = "Adicionar foto aqui", src }: { label?: string; src?: string }) {
+export function PhotoPlaceholder({ label = "Adicionar foto aqui", src }: { label?: string; src?: string | undefined }) {
   if (src) return <img src={src} alt="" className="aspect-square w-full rounded-2xl object-cover" loading="lazy" />;
   return (
     <div className="grid aspect-square w-full place-items-center rounded-2xl border-2 border-dashed border-input bg-secondary text-center text-sm text-muted-foreground">

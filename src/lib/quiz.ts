@@ -102,7 +102,7 @@ export function computeProfile(answers: Answers): Profile {
       for (const [k, v] of Object.entries(o?.score ?? {})) s[k as Profile] += v ?? 0;
     }
   }
-  return ORDER.reduce((best, p) => (s[p] > s[best] ? p : best), ORDER[0]);
+  return ORDER.reduce<Profile>((best, p) => (s[p] > s[best] ? p : best), "praticidade");
 }
 
 export const PROFILES: Record<Profile, { name: string; text: string }> = {

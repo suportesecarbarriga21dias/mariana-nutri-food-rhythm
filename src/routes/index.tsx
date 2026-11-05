@@ -45,7 +45,7 @@ function Quiz() {
 
   if (step === TOTAL) {
     const profile = PROFILES[computeProfile(answers)];
-    const name = typeof answers.nome === "string" ? answers.nome.trim() : "";
+    const name = typeof answers["nome"] === "string" ? answers["nome"].trim() : "";
     return (
       <Shell>
         <div className="step-in flex min-h-[80vh] flex-col items-center justify-center text-center">
@@ -67,7 +67,7 @@ function Quiz() {
     );
   }
 
-  const q = QUESTIONS[step];
+  const q = QUESTIONS[step]!;
   const value = answers[q.id];
   const set = (v: string | string[]) => { setError(""); setAnswers((a) => ({ ...a, [q.id]: v })); };
 
