@@ -1,4 +1,4 @@
-import photo from "@/assets/mariana-nutri.jpg.asset.json";
+import photo from "@/assets/mariana-nutri-perfil.jpg.asset.json";
 
 export function BrandHeader({ size = "lg" }: { size?: "sm" | "lg" }) {
   const img = size === "lg" ? "h-24 w-24" : "h-11 w-11";
