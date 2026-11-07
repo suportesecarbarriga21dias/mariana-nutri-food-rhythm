@@ -112,7 +112,7 @@ function Quiz() {
                 placeholder={q.placeholder}
                 maxLength={40}
                 autoComplete="given-name"
-                className="min-h-14 w-full rounded-2xl border-2 border-border bg-card px-4 text-base outline-none focus:border-primary"
+                className="min-h-14 w-full rounded-2xl border-2 border-border bg-card px-4 text-base outline-none focus:border-primary scroll-mb-32"
               />
               <span className="mt-2 block text-sm text-muted-foreground">Opcional</span>
             </label>
@@ -134,7 +134,7 @@ function Quiz() {
       </div>
 
       <div className="fixed inset-x-0 bottom-0 border-t border-border bg-background/95 backdrop-blur">
-        <div className="mx-auto flex max-w-lg gap-3 px-5 py-4">
+        <div className="mx-auto flex max-w-xl gap-3 px-5 py-4 pb-[max(1rem,env(safe-area-inset-bottom))] sm:px-8">
           {step > 0 && <GhostButton onClick={() => { setError(""); setStep(step - 1); }}>Voltar</GhostButton>}
           <PrimaryButton onClick={next}>{step === TOTAL - 1 ? "Ver meu resultado" : "Continuar"}</PrimaryButton>
         </div>
@@ -144,5 +144,5 @@ function Quiz() {
 }
 
 function Shell({ children }: { children: React.ReactNode }) {
-  return <main className="mx-auto min-h-screen max-w-lg px-5">{children}</main>;
+  return <main className="mx-auto min-h-[100dvh] w-full max-w-xl px-5 sm:px-8">{children}</main>;
 }

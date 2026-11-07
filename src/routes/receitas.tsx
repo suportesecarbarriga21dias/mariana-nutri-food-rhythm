@@ -31,7 +31,7 @@ function Recipes() {
   };
 
   return (
-    <main className="mx-auto max-w-3xl px-5 pb-16">
+    <main className="mx-auto w-full max-w-5xl px-5 pb-16 sm:px-8">
       <header className="flex items-center justify-between py-5">
         <BrandHeader size="sm" />
         <Link to="/" className="min-h-11 content-center text-sm text-muted-foreground underline">Refazer quiz</Link>
@@ -43,7 +43,7 @@ function Recipes() {
         <p className="mx-auto mt-4 max-w-md text-lg text-muted-foreground">Uma seleção de ideias para trazer mais praticidade e variedade para sua rotina.</p>
       </section>
 
-      <section className="mt-12 grid gap-6 sm:grid-cols-2" aria-label="Receitas gratuitas">
+      <section className="mt-12 grid gap-6 sm:grid-cols-2 lg:grid-cols-3" aria-label="Receitas gratuitas">
         {FREE_RECIPES.map((r, i) => (
           <article key={i} className="flex flex-col rounded-3xl border border-border bg-card p-4">
             <PhotoPlaceholder src={r.image} label="Adicionar foto da receita aqui" />
@@ -76,7 +76,7 @@ function Recipes() {
         </section>
       )}
 
-      <section className="mt-16 overflow-hidden rounded-3xl bg-sand p-7 sm:p-10">
+      <section className="mt-16 overflow-hidden rounded-3xl border border-sage/40 bg-sand p-7 sm:p-10">
         <div className="grid items-center gap-6 sm:grid-cols-[180px_1fr]">
           <div className="mx-auto w-40 sm:w-full"><PhotoPlaceholder label="Adicionar capa do livro aqui" /></div>
           <div className="text-center sm:text-left">
