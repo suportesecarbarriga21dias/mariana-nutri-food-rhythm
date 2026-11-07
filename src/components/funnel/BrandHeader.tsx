@@ -4,8 +4,8 @@ export function BrandHeader({ size = "lg" }: { size?: "sm" | "lg" }) {
   const img = size === "lg" ? "h-24 w-24" : "h-11 w-11";
   return (
     <div className={size === "lg" ? "flex flex-col items-center gap-3" : "flex items-center gap-3"}>
-      <div className={`${img} shrink-0 overflow-hidden rounded-full ring-4 ring-primary-soft`}>
-        <img src={photo.url} alt="Foto de Mariana Nutri" className="h-full w-full object-cover" width={480} height={480} />
+      <div className={`${img} shrink-0 overflow-hidden rounded-full ring-4 ring-primary-soft bg-card`}>
+        <img src={photo.url} alt="Foto de Mariana Nutri" className="h-full w-full object-cover object-[50%_40%]" width={600} height={600} />
       </div>
       <div className="flex items-center gap-1.5">
         <span className={size === "lg" ? "text-lg font-semibold" : "text-base font-semibold"}>Mariana Nutri</span>

@@ -31,7 +31,7 @@ function Recipes() {
   };
 
   return (
-    <main className="mx-auto max-w-3xl px-5 pb-16">
+    <main className="mx-auto w-full max-w-4xl px-5 pb-16 sm:px-8">
       <header className="flex items-center justify-between py-5">
         <BrandHeader size="sm" />
         <Link to="/" className="min-h-11 content-center text-sm text-muted-foreground underline">Refazer quiz</Link>
@@ -76,7 +76,7 @@ function Recipes() {
         </section>
       )}
 
-      <section className="mt-16 overflow-hidden rounded-3xl bg-sand p-7 sm:p-10">
+      <section className="mt-16 overflow-hidden rounded-3xl border border-sage/40 bg-sand p-7 sm:p-10">
         <div className="grid items-center gap-6 sm:grid-cols-[180px_1fr]">
           <div className="mx-auto w-40 sm:w-full"><PhotoPlaceholder label="Adicionar capa do livro aqui" /></div>
           <div className="text-center sm:text-left">
