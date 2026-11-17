@@ -1,6 +1,5 @@
 # Quiz recipe redemption
 
-- [x] Add required, validated email to the existing name step; retain it in quiz state.
-- [ ] Configure sender domain — waiting for the user's owned domain setup.
-- [ ] Wire real recipe email, idempotent sending, loading/retry feedback, and checkout redirect after confirmed success — blocked by sender setup.
-- [ ] Verify real email acceptance and checkout redirect end-to-end — blocked by sender setup and a recipient for the live test.
+- [x] Replace the superseded email flow with the exact WhatsApp short link; remove email collection and gating.
+- [x] Verify the quiz and WhatsApp handoff on mobile and desktop.
+- [ ] Prefill the requested greeting — blocked: WhatsApp discards text parameters on this short link; its owner must configure the greeting in WhatsApp Business.

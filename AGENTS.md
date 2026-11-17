@@ -10,4 +10,5 @@
 <!-- LOVABLE:END -->
 
 - Keep email validation in a client-safe shared schema so the quiz and its sending action can enforce the same recipient requirements.
-- Keep quiz email in the existing answer state until redemption; do not include personal data in analytics events.
+- Keep redemption destinations in a client-safe configuration module; WhatsApp short-link greetings are controlled by WhatsApp Business, not query parameters.
+- Do not include personal data in analytics events.
