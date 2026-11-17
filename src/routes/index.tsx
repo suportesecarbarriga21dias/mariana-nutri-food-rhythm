@@ -1,9 +1,10 @@
-import { createFileRoute, useNavigate } from "@tanstack/react-router";
+import { createFileRoute } from "@tanstack/react-router";
 import { useState } from "react";
 import { BrandHeader } from "@/components/funnel/BrandHeader";
 import { GhostButton, OptionCard, PrimaryButton } from "@/components/funnel/ui";
 import { PROFILES, QUESTIONS, computeProfile, type Answers } from "@/lib/quiz";
 import { trackEvent } from "@/lib/track";
+import { validateQuizEmail } from "@/lib/quiz-email";
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -22,7 +23,6 @@ export const Route = createFileRoute("/")({
 const TOTAL = QUESTIONS.length;
 
 function Quiz() {
-  const navigate = useNavigate();
   const [step, setStep] = useState(-1); // -1 intro, TOTAL = result
   const [answers, setAnswers] = useState<Answers>({});
   const [error, setError] = useState("");
@@ -46,6 +46,7 @@ function Quiz() {
   if (step === TOTAL) {
     const profile = PROFILES[computeProfile(answers)];
     const name = typeof answers["nome"] === "string" ? answers["nome"].trim() : "";
+    const email = validateQuizEmail(answers["email"]);
     return (
       <Shell>
         <div className="step-in flex min-h-[80vh] flex-col items-center justify-center text-center">
@@ -57,21 +58,32 @@ function Quiz() {
           </div>
           <PrimaryButton
             className="mt-8"
-            onClick={() => { trackEvent("free_recipes_clicked", { profile: profile.name }); navigate({ to: "/receitas" }); }}
+            disabled={!email}
+            onClick={() => {
+              if (!email) return;
+              setError("O envio das receitas ainda está sendo configurado. Tente novamente mais tarde.");
+            }}
           >
             Resgatar minhas receitas grátis
           </PrimaryButton>
+          {error && <p role="alert" className="mt-4 text-sm text-destructive">{error}</p>}
           <button className="mt-4 min-h-11 text-sm text-muted-foreground underline" onClick={() => setStep(TOTAL - 1)}>Revisar respostas</button>
         </div>
       </Shell>
     );
   }
 
-  const q = QUESTIONS[step]!;
+   const q = QUESTIONS[step];
+   if (!q) return null;
   const value = answers[q.id];
   const set = (v: string | string[]) => { setError(""); setAnswers((a) => ({ ...a, [q.id]: v })); };
 
   const next = () => {
+    if (q.id === "nome") {
+      const email = validateQuizEmail(answers["email"]);
+      if (!email) { setError("Informe um endereço de e-mail válido para continuar."); return; }
+      setAnswers((a) => ({ ...a, email }));
+    }
     if (q.type !== "text") {
       const ok = Array.isArray(value) ? value.length > 0 : !!value;
       if (!ok) { setError("Escolha uma opção para continuar."); return; }
@@ -104,6 +116,7 @@ function Quiz() {
 
         <div className="mt-6 flex flex-col gap-3" role={q.type === "multi" ? "group" : "radiogroup"} aria-label={q.title}>
           {q.type === "text" ? (
+            <div>
             <label className="block">
               <span className="sr-only">{q.title}</span>
               <input
@@ -116,6 +129,24 @@ function Quiz() {
               />
               <span className="mt-2 block text-sm text-muted-foreground">Opcional</span>
             </label>
+            <label className="mt-5 block">
+              <span className="mb-2 block text-sm font-medium">Seu e-mail</span>
+              <input
+                type="email"
+                inputMode="email"
+                autoComplete="email"
+                autoCapitalize="none"
+                spellCheck={false}
+                required
+                maxLength={254}
+                value={typeof answers["email"] === "string" ? answers["email"] : ""}
+                onChange={(e) => { setError(""); setAnswers((a) => ({ ...a, email: e.target.value })); }}
+                placeholder="Seu endereço de e-mail"
+                aria-invalid={!!error}
+                className="min-h-14 w-full rounded-2xl border-2 border-border bg-card px-4 text-base outline-none focus:border-primary scroll-mb-32"
+              />
+            </label>
+            </div>
           ) : (
             q.options.map((o) => {
               const multi = q.type === "multi";
