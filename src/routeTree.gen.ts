@@ -10,11 +10,24 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as AuthenticatedRouteRouteImport } from './routes/_authenticated/route'
+import { Route as PrivacidadeRouteImport } from './routes/privacidade'
 import { Route as ReceitasRouteImport } from './routes/receitas'
+import { Route as AuthenticatedAdminRouteImport } from './routes/_authenticated/admin'
+import { Route as ApiPublicJourneyRouteImport } from './routes/api.public.journey'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AuthenticatedRouteRoute = AuthenticatedRouteRouteImport.update({
+  id: '/_authenticated',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const PrivacidadeRoute = PrivacidadeRouteImport.update({
+  id: '/privacidade',
+  path: '/privacidade',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ReceitasRoute = ReceitasRouteImport.update({
@@ -22,31 +35,62 @@ const ReceitasRoute = ReceitasRouteImport.update({
   path: '/receitas',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AuthenticatedAdminRoute = AuthenticatedAdminRouteImport.update({
+  id: '/admin',
+  path: '/admin',
+  getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
+const ApiPublicJourneyRoute = ApiPublicJourneyRouteImport.update({
+  id: '/api/public/journey',
+  path: '/api/public/journey',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/privacidade': typeof PrivacidadeRoute
   '/receitas': typeof ReceitasRoute
+  '/admin': typeof AuthenticatedAdminRoute
+  '/api/public/journey': typeof ApiPublicJourneyRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/privacidade': typeof PrivacidadeRoute
   '/receitas': typeof ReceitasRoute
+  '/admin': typeof AuthenticatedAdminRoute
+  '/api/public/journey': typeof ApiPublicJourneyRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/_authenticated': typeof AuthenticatedRouteRouteWithChildren
+  '/privacidade': typeof PrivacidadeRoute
   '/receitas': typeof ReceitasRoute
+  '/_authenticated/admin': typeof AuthenticatedAdminRoute
+  '/api/public/journey': typeof ApiPublicJourneyRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/receitas'
+  fullPaths:
+    '/' | '/privacidade' | '/receitas' | '/admin' | '/api/public/journey'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/receitas'
-  id: '__root__' | '/' | '/receitas'
+  to: '/' | '/privacidade' | '/receitas' | '/admin' | '/api/public/journey'
+  id:
+    | '__root__'
+    | '/'
+    | '/_authenticated'
+    | '/privacidade'
+    | '/receitas'
+    | '/_authenticated/admin'
+    | '/api/public/journey'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  AuthenticatedRouteRoute: typeof AuthenticatedRouteRouteWithChildren
+  PrivacidadeRoute: typeof PrivacidadeRoute
   ReceitasRoute: typeof ReceitasRoute
+  ApiPublicJourneyRoute: typeof ApiPublicJourneyRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -58,6 +102,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/_authenticated': {
+      id: '/_authenticated'
+      path: ''
+      fullPath: '/'
+      preLoaderRoute: typeof AuthenticatedRouteRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/privacidade': {
+      id: '/privacidade'
+      path: '/privacidade'
+      fullPath: '/privacidade'
+      preLoaderRoute: typeof PrivacidadeRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/receitas': {
       id: '/receitas'
       path: '/receitas'
@@ -65,12 +123,40 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ReceitasRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/_authenticated/admin': {
+      id: '/_authenticated/admin'
+      path: '/admin'
+      fullPath: '/admin'
+      preLoaderRoute: typeof AuthenticatedAdminRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/api/public/journey': {
+      id: '/api/public/journey'
+      path: '/api/public/journey'
+      fullPath: '/api/public/journey'
+      preLoaderRoute: typeof ApiPublicJourneyRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
+interface AuthenticatedRouteRouteChildren {
+  AuthenticatedAdminRoute: typeof AuthenticatedAdminRoute
+}
+
+const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
+  AuthenticatedAdminRoute: AuthenticatedAdminRoute,
+}
+
+const AuthenticatedRouteRouteWithChildren =
+  AuthenticatedRouteRoute._addFileChildren(AuthenticatedRouteRouteChildren)
+
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  AuthenticatedRouteRoute: AuthenticatedRouteRouteWithChildren,
+  PrivacidadeRoute: PrivacidadeRoute,
   ReceitasRoute: ReceitasRoute,
+  ApiPublicJourneyRoute: ApiPublicJourneyRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

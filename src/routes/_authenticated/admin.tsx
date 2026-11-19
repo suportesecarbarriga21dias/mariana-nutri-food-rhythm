@@ -1,0 +1,4 @@
+import { createFileRoute,redirect } from '@tanstack/react-router';
+import { adminAccess } from '@/lib/analytics/admin.functions';
+import { Dashboard } from '@/components/admin/Dashboard';
+export const Route=createFileRoute('/_authenticated/admin')({beforeLoad:async()=>{const access=await adminAccess();if(!access.allowed)throw redirect({to:'/auth'});},head:()=>({meta:[{title:'Painel privado | Mariana Nutri'},{name:'description',content:'Painel administrativo privado de análise do quiz Mariana Nutri.'},{property:'og:title',content:'Painel privado | Mariana Nutri'},{property:'og:description',content:'Área de acesso exclusivo da administração Mariana Nutri.'},{property:'og:type',content:'website'},{name:'twitter:card',content:'summary'},{name:'robots',content:'noindex,nofollow'}]}),component:Dashboard});
